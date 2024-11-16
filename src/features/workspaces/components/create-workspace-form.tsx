@@ -17,7 +17,7 @@ import {
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCreateWorkspace } from "../api/use-create-workspace";
+import { useCreateWorkspace } from "../api/use-create-workspaces";
 import { useRef } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
