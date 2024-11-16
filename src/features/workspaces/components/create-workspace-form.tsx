@@ -18,14 +18,19 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateWorkspace } from "../api/use-create-workspace";
+import { useRef } from "react";
+import Image from "next/image";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ImageIcon } from "lucide-react";
 
 interface CreateWorkspaceFormProps {
 	onCancel?: () => void;
 }
 
 export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
-    const {mutate , isPending} = useCreateWorkspace();
+	const { mutate, isPending } = useCreateWorkspace();
 
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const form = useForm<z.infer<typeof createWorkspaceSchema>>({
 		resolver: zodResolver(createWorkspaceSchema),
@@ -34,7 +39,26 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 		},
 	});
 	const onSubmit = (values: z.infer<typeof createWorkspaceSchema>) => {
-		mutate ( {json : values })
+		const finalValues = {
+			...values,
+			image: values.image instanceof File ? values.image : "",
+		};
+		mutate(
+			{ form: finalValues }, // it wa {json : values} but it changed to handle uploading image
+			{
+				onSuccess: () => {
+					form.reset();
+					//TODO : Redirect to new workspace
+				},
+			}
+		);
+	};
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			form.setValue("image", file);
+		}
 	};
 
 	return (
@@ -64,6 +88,60 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 									</FormItem>
 								)}
 							/>
+							<FormField
+								control={form.control}
+								name="image"
+								render={({ field }) => (
+									<div className="flex flex-col gap-y-2">
+										<div className="flex items-center gap-x-5">
+											{field.value ? (
+												<div className="size-[72px] relative rounded-md overflow-hidden">
+													<Image
+														alt="logo"
+														fill
+														className="object-cover"
+														src={
+															field.value instanceof File
+																? URL.createObjectURL(field.value)
+																: field.value
+														}
+													/>
+												</div>
+											) : (
+												<Avatar className="size-[72px]">
+													<AvatarFallback>
+														<ImageIcon className="size-[36px] text-neutral-400" />
+													</AvatarFallback>
+												</Avatar>
+											)}
+											<div className="flex flex-col">
+												<p className="text-sm">Workspace Icon</p>
+												<p className="text-sm text-muted-foreground">
+													JPG, PNG, SVG OR JPEG, max 1mb
+												</p>
+												<input
+													className="hidden"
+													ref={inputRef}
+													disabled={isPending}
+													onChange={handleImageChange}
+													type="file"
+													accept=".jpg, .png, .svg, .jpeg"
+												/>
+												<Button
+													type="button"
+													disabled={isPending}
+													variant="teritary"
+													size="xs"
+													className="w-fit mt-2"
+													onClick={() => inputRef.current?.click()}
+												>
+													Upload Image
+												</Button>
+											</div>
+										</div>
+									</div>
+								)}
+							/>
 						</div>
 						<DottedSeparator className="py-7" />
 						<div className="flex items-center justify-between">
@@ -71,16 +149,12 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 								type="button"
 								size="lg"
 								variant="secondary"
-                                onClick={onCancel}
-                                disabled={isPending}
+								onClick={onCancel}
+								disabled={isPending}
 							>
 								Cancel
 							</Button>
-                            <Button
-                                disabled={isPending}
-								type="submit"
-								size="lg"
-							>
+							<Button disabled={isPending} type="submit" size="lg">
 								Create workspace
 							</Button>
 						</div>

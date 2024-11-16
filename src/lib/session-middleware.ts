@@ -1,30 +1,29 @@
-import "server-only"
+import "server-only";
 
-import { getCookie } from "hono/cookie"
-import { createMiddleware } from "hono/factory"
-import { AUTH_COOKIE } from "@/features/auth/constants"
+import { getCookie } from "hono/cookie";
+import { createMiddleware } from "hono/factory";
+import { AUTH_COOKIE } from "@/features/auth/constants";
 import {
-    Account,
-    Client,
-    Databases,
-    Models,
-    Storage,
-    type Account as AccountType,
-    type Databases as DatabasesType,
-    type Storage as StorageType,
-    type Users as UsersType,
-} from "node-appwrite"
+	Account,
+	Client,
+	Databases,
+	Models,
+	Storage,
+	type Account as AccountType,
+	type Databases as DatabasesType,
+	type Storage as StorageType,
+	type Users as UsersType,
+} from "node-appwrite";
 
 type AdditionalContext = {
-    Variables: {
-        account: AccountType
-        databases: DatabasesType
-        storage: StorageType
-        users: UsersType
-        user: Models.User<Models.Preferences>
-    }
-}
-
+	Variables: {
+		account: AccountType;
+		databases: DatabasesType;
+		storage: StorageType;
+		users: UsersType;
+		user: Models.User<Models.Preferences>;
+	};
+};
 
 export const sessionMiddleware = createMiddleware<AdditionalContext>(
 	async (c, next) => {
