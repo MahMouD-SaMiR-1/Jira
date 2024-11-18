@@ -16,7 +16,7 @@ export const useLogout = () => {
 			const response = await client.api.auth.logout["$post"]();
 			
 			if (!response.ok) {
-				throw new Error("Failed to loggout");
+				throw new Error("Failed to logout");
 			}
 			
 			return await response.json();
@@ -25,6 +25,7 @@ export const useLogout = () => {
 			toast.success("Logged out")
 			router.refresh();
 			queryClient.invalidateQueries({ queryKey: ["current"] });
+			queryClient.invalidateQueries({ queryKey: ["workspaces"] }); //????????????????????
 		},
 		onError: () => {
 			toast.error("Failed to log out");
