@@ -1,6 +1,5 @@
-
 // import { cookies } from "next/headers";
-import {Query} from "node-appwrite";
+import { Query } from "node-appwrite";
 // import { AUTH_COOKIE } from "@/features/auth/constants";
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { getMember } from "@/features/members/utils";
@@ -20,15 +19,15 @@ export const getWorkspaces = async () => {
 		// client.setSession(session.value);
 		// const databases = new Databases(client);
 		// const account = new Account(client)
-		const {databases, account}= await createSessionClient()
-		const user = await account.get()
+		const { databases, account } = await createSessionClient();
+		const user = await account.get();
 
 		const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
 			Query.equal("userId", user.$id),
 		]);
 
 		if (members.total === 0) {
-			return { documents: [], total: 0 }
+			return { documents: [], total: 0 };
 		}
 
 		const workspaceIds = members.documents.map((member) => member.workspaceId);
@@ -39,16 +38,15 @@ export const getWorkspaces = async () => {
 			[Query.orderDesc("$createdAt"), Query.contains("$id", workspaceIds)]
 		);
 
-		return workspaces
+		return workspaces;
 	} catch {
 		return { documents: [], total: 0 };
 	}
 };
 
 interface GetWorkspaceProps {
-	workspaceId : string
+	workspaceId: string;
 }
-
 
 export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
 	try {
@@ -74,8 +72,68 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
 		});
 
 		if (!member) {
-			return null
+			return null;
 		}
+
+		// const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+		// 	Query.equal("userId", user.$id),
+		// ]);
+
+		// if (members.total === 0) {
+		// 	return { documents: [], total: 0 };
+		// }
+
+		// const workspaceIds = members.documents.map((member) => member.workspaceId);
+
+		const workspace = await databases.getDocument<Workspace>(
+			DATABASE_ID,
+			WORKSPACES_ID,
+			// [Query.orderDesc("$createdAt"), Query.contains("$id", workspaceIds)]
+			workspaceId
+		);
+
+		return workspace;
+	} catch {
+		return null;
+	}
+};
+
+
+
+
+
+interface GetWorkspaceInfoProps {
+	workspaceId: string;
+}
+
+export const getWorkspaceInfo = async ({
+	workspaceId,
+}: GetWorkspaceInfoProps) => {
+	try {
+		// const client = new Client()
+		// 	.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+		// 	.setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
+
+		// const session = await cookies().get(AUTH_COOKIE);
+
+		// if (!session) return null;
+
+		// client.setSession(session.value);
+		// const databases = new Databases(client);
+		// const account = new Account(client);
+		const { databases } = await createSessionClient();
+
+		// const user = await account.get();
+
+		// const member = await getMember({
+		// 	databases,
+		// 	userId: user.$id,
+		// 	workspaceId,
+		// });
+
+		// if (!member) {
+		// 	return null;
+		// }
 
 		// const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
 		// 	Query.equal("userId", user.$id),
@@ -94,8 +152,10 @@ export const getWorkspace = async ({ workspaceId }: GetWorkspaceProps) => {
 			workspaceId,
 		);
 
-		return workspace;
+		return {
+			name: workspace.name,
+		};
 	} catch {
-		return null
+		return null;
 	}
 };

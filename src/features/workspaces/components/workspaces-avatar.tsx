@@ -8,7 +8,7 @@ import Image from "next/image";
 
 interface WorkspaceAvatarProps {
     image?: string;
-    name?: string;
+    name: string;
     className?: string;
 }
 

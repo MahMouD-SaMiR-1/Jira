@@ -41,21 +41,16 @@ export const EditWorkspaceForm = ({
 }: EditWorkspaceFormProps) => {
 	const router = useRouter();
 	const { mutate, isPending } = useUpdateWorkspace();
-	const {
-		mutate: resetInviteCode,
-		isPending: isResettingInviteCode
-	} = useResetInviteCode()
+	const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
+		useDeleteWorkspace();
+	const { mutate: resetInviteCode, isPending: isResettingInviteCode } =
+		useResetInviteCode();
 
-	const {
-		mutate: deleteWorkspace,
-		isPending: isDeletingWorkspace
-	} = useDeleteWorkspace()
-
-	const [DeleteDialog , confirmDelete] = useConfirm(
+	const [DeleteDialog, confirmDelete] = useConfirm(
 		"Delete Workspace",
 		"This action cannot be undone.",
-		"destructive",
-	)
+		"destructive"
+	);
 
 	const [ResetDialog, confirmReset] = useConfirm(
 		"Reset invite link",
@@ -74,21 +69,21 @@ export const EditWorkspaceForm = ({
 	});
 
 	const handleDelete = async () => {
-		const ok = await confirmDelete()
+		const ok = await confirmDelete();
 
 		if (!ok) return;
 
-		deleteWorkspace({
-			param: {workspaceId : initialValues.$id},
-		}, {
-			onSuccess: () => {
-				window.location.href ="/"
-
+		deleteWorkspace(
+			{
+				param: { workspaceId: initialValues.$id },
+			},
+			{
+				onSuccess: () => {
+					window.location.href = "/";
+				},
 			}
-
-		})
-		
-	}
+		);
+	};
 
 	const handleResetInviteCode = async () => {
 		const ok = await confirmReset();
@@ -101,7 +96,7 @@ export const EditWorkspaceForm = ({
 			},
 			{
 				onSuccess: () => {
-				router.refresh()
+					router.refresh();
 				},
 			}
 		);
@@ -133,18 +128,18 @@ export const EditWorkspaceForm = ({
 		}
 	};
 
-	const fullInviteLink = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`
+	const fullInviteLink = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
 
 	const handleCopyInviteLink = () => {
-		navigator.clipboard.writeText(fullInviteLink)
-		.then(() => toast.success("Invite link copied to the clipboard"))
-	}
-
+		navigator.clipboard
+			.writeText(fullInviteLink)
+			.then(() => toast.success("Invite link copied to the clipboard"));
+	};
 
 	return (
 		<div className="flex flex-col gap-y-4">
 			<DeleteDialog />
-			<ResetDialog/>
+			<ResetDialog />
 			<Card className="w-full h-full border-none shadow-none">
 				<CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
 					<Button
@@ -319,7 +314,7 @@ export const EditWorkspaceForm = ({
 							Deleting a workspace is irreversible and will remove all
 							associated data.
 						</p>
-						<DottedSeparator className="py-7" /> 
+						<DottedSeparator className="py-7" />
 						<Button
 							className="mt-6 w-fit ml-auto"
 							size="sm"
