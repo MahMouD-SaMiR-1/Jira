@@ -22,24 +22,23 @@ import { useRef } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ImageIcon } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-
 
 interface CreateProjectFormProps {
 	onCancel?: () => void;
 }
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
-	const workspaceId = useWorkspaceId()
-	// const router = useRouter();
+	const workspaceId = useWorkspaceId();
+	const router = useRouter();
 	const { mutate, isPending } = useCreateProject();
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const form = useForm<z.infer<typeof createProjectSchema>>({
-		resolver: zodResolver(createProjectSchema.omit({workspaceId: true})),
+		resolver: zodResolver(createProjectSchema.omit({ workspaceId: true })),
 		defaultValues: {
 			name: "",
 		},
@@ -53,10 +52,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 		mutate(
 			{ form: finalValues }, // it wa {json : values} but it changed to handle uploading image
 			{
-				onSuccess: () => {
+				onSuccess: ({ data }) => {
 					form.reset();
-					// router.push(`/workspaces/${data.$id}`);
-					//TODO: Redirect to project screen
+					router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
 				},
 			}
 		);
@@ -143,9 +141,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 														size="xs"
 														className="w-fit mt-2"
 														onClick={() => {
-															field.onChange(null)
+															field.onChange(null);
 															if (inputRef.current) {
-																inputRef.current.value = ""
+																inputRef.current.value = "";
 															}
 														}}
 													>
