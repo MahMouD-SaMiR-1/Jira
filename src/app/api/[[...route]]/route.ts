@@ -16,7 +16,7 @@ const routes = app
 	.route("/workspaces", workspaces)
 	.route("/members", members)
 	.route("/projects", projects) 
-	.route("/tasks", tasks) 
+	.route("/tasks", tasks)
 
 export const GET = handle(app);
 export const POST = handle(app);
