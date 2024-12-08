@@ -8,8 +8,6 @@ interface GetProjectProps {
 }
 
 export const getProject = async ({ projectId }: GetProjectProps) => {
-
-
 	const { databases, account } = await createSessionClient();
 
 	const user = await account.get();

@@ -50,7 +50,7 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 			image: values.image instanceof File ? values.image : "",
 		};
 		mutate(
-			{ form: finalValues }, // it wa {json : values} but it changed to handle uploading image
+			{ form: finalValues },
 			{
 				onSuccess: ({ data }) => {
 					form.reset();

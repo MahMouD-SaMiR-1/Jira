@@ -14,14 +14,25 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/date-picker";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/components/ui/select";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 import { createTaskSchema } from "../schemas";
 import { useCreateTask } from "../api/use-create-task";
 import { TaskStatus } from "../types";
-
-
 
 interface CreateTaskFormProps {
 	onCancel?: () => void;
@@ -45,11 +56,11 @@ export const CreateTaskForm = ({
 	});
 	const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
 		mutate(
-			{ json: { ...values, workspaceId } }, // it wa {json : values} but it changed to handle uploading image
+			{ json: { ...values, workspaceId } },
 			{
 				onSuccess: () => {
 					form.reset();
-					onCancel?.()
+					onCancel?.();
 				},
 			}
 		);

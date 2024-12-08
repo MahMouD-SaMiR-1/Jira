@@ -70,21 +70,11 @@ export const EditProjectForm = ({
 			},
 			{
 				onSuccess: () => {
-					window.location.href = `/workspaces/${initialValues.workspaceId }`;
+					window.location.href = `/workspaces/${initialValues.workspaceId}`;
 				},
 			}
 		);
 	};
-
-	// const handleResetInviteCode = async () => {
-	// 	const ok = await confirmReset();
-
-	// 	if (!ok) return;
-
-	// 	resetInviteCode({
-	// 		param: { workspaceId: initialValues.$id },
-	// 	});
-	// };
 
 	const onSubmit = (values: z.infer<typeof updateProjectSchema>) => {
 		const finalValues = {
@@ -95,11 +85,10 @@ export const EditProjectForm = ({
 			{
 				form: finalValues,
 				param: { projectId: initialValues.$id },
-			}, // it wa {json : values} but it changed to handle uploading image
+			}, 
 			{
 				onSuccess: () => {
 					form.reset();
-					// router.push(`/workspaces/${data.$id}`);
 				},
 			}
 		);

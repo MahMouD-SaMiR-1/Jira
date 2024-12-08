@@ -19,8 +19,6 @@ export const useDeleteProject = () => {
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
 		mutationFn: async ({ param }) => {
-			//it was ({json}) but it was changed to handle uploading image
-
 			const response = await client.api.projects[":projectId"]["$delete"]({
 				param,
 			});

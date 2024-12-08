@@ -14,13 +14,11 @@ type RequestType = InferRequestType<
 >;
 
 export const useUpdateProject = () => {
-	const router = useRouter()
+	const router = useRouter();
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
 		mutationFn: async ({ form, param }) => {
-			//it was ({json}) but it was changed to handle uploading image
-
 			const response = await client.api.projects[":projectId"]["$patch"]({
 				form,
 				param,
@@ -32,7 +30,7 @@ export const useUpdateProject = () => {
 
 			return await response.json();
 		},
-		onSuccess: ({ data}) => {
+		onSuccess: ({ data }) => {
 			toast.success("Project updated ");
 			router.refresh();
 			queryClient.invalidateQueries({ queryKey: ["projects"] });

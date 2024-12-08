@@ -1,13 +1,15 @@
 
-import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
-import { getMember } from "@/features/members/utils";
-import { sessionMiddleware } from "@/lib/session-middleware";
-import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
 import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
-import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
+
+import { getMember } from "@/features/members/utils";
+
+import { sessionMiddleware } from "@/lib/session-middleware";
 import { createProjectSchema, updateProjectSchema } from "../schemas";
 import { Project } from "../types";
+import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
 
 const app = new Hono()
 	.post(
@@ -18,7 +20,8 @@ const app = new Hono()
 			const databases = c.get("databases");
 			const storage = c.get("storage");
 			const user = c.get("user");
-			const { name, image, workspaceId } = c.req.valid("form"); // also her it was "form"
+			
+			const { name, image, workspaceId } = c.req.valid("form");
 
 			const member = await getMember({
 				databases,
@@ -39,7 +42,7 @@ const app = new Hono()
 					image
 				);
 
-				const arrayBuffer = await storage.getFilePreview(
+			const arrayBuffer = await storage.getFilePreview(
 					IMAGES_BUCKET_ID,
 					file.$id
 				);
@@ -153,19 +156,20 @@ const app = new Hono()
 			return c.json({ data: project });
 		}
 	)
+	
 	.delete
 	("/:projectId",
 		sessionMiddleware,
 		async (c) => {
 		const databases = c.get("databases");
 		const user = c.get("user");
-			const { projectId } = c.req.param();
+		const { projectId } = c.req.param();
 			
-			const existingProject = await databases.getDocument<Project>(
-                DATABASE_ID,
-                PROJECTS_ID,
-                projectId
-			)
+		const existingProject = await databases.getDocument<Project>(
+			DATABASE_ID,
+			PROJECTS_ID,
+			projectId
+		)
 			
 		const member = await getMember({
 			databases,

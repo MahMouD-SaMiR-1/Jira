@@ -11,9 +11,7 @@ export const useCreateTask = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
-		mutationFn: async ({ json }) => { //it was ({json}) but it was changed to handle uploading image
-			
-
+		mutationFn: async ({ json }) => {
 			const response = await client.api.tasks["$post"]({ json });
 
 			if (!response.ok) {

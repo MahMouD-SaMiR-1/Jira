@@ -24,7 +24,7 @@ export const DatePicker = ({
 	value,
 	onChange,
 	className,
-	placeholder = "Select date"
+	placeholder = "Select date",
 }: DatePickerProps) => {
 	return (
 		<Popover>

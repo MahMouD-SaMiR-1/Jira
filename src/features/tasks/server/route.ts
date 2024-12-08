@@ -1,13 +1,16 @@
-import { sessionMiddleware } from "@/lib/session-middleware";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
-import { createTaskSchema } from "../schemas";
-import { getMember } from "@/features/members/utils";
-import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
-import { ID, Query } from "node-appwrite";
 import { z } from "zod";
-import { TaskStatus } from "../types";
+import { Hono } from "hono";
+import { ID, Query } from "node-appwrite";
+import { zValidator } from "@hono/zod-validator";
+
+import { getMember } from "@/features/members/utils";
+
+import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 import { createAdminClient } from "@/lib/appwrite";
+import { sessionMiddleware } from "@/lib/session-middleware";
+
+import { TaskStatus } from "../types";
+import { createTaskSchema } from "../schemas";
 import { Project } from "@/features/projects/types";
 
 const app = new Hono()
@@ -44,7 +47,7 @@ const app = new Hono()
 
 			const query = [
 				Query.equal("workspaceId", workspaceId),
-				Query.orderDesc("createdAt"),
+				Query.orderDesc("$createdAt"),
 			];
 
 			if (projectId) {

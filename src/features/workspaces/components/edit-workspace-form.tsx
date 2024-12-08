@@ -90,12 +90,10 @@ export const EditWorkspaceForm = ({
 
 		if (!ok) return;
 
-		resetInviteCode(
-			{
-				param: { workspaceId: initialValues.$id },
-			}
-		)
-	}
+		resetInviteCode({
+			param: { workspaceId: initialValues.$id },
+		});
+	};
 
 	const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
 		const finalValues = {
@@ -106,11 +104,10 @@ export const EditWorkspaceForm = ({
 			{
 				form: finalValues,
 				param: { workspaceId: initialValues.$id },
-			}, // it wa {json : values} but it changed to handle uploading image
+			},
 			{
 				onSuccess: () => {
 					form.reset();
-					// router.push(`/workspaces/${data.$id}`);
 				},
 			}
 		);

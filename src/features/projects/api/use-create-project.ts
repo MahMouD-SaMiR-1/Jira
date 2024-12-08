@@ -4,16 +4,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<(typeof client.api.projects)["$post"], 200>;
+type ResponseType = InferResponseType<
+	(typeof client.api.projects)["$post"],
+	200
+>;
 type RequestType = InferRequestType<(typeof client.api.projects)["$post"]>;
 
 export const useCreateProject = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
-		mutationFn: async ({ form }) => { //it was ({json}) but it was changed to handle uploading image
-			
-
+		mutationFn: async ({ form }) => {
 			const response = await client.api.projects["$post"]({ form });
 
 			if (!response.ok) {

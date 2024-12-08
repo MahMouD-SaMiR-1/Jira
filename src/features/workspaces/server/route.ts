@@ -142,17 +142,13 @@ const app = new Hono()
 			return c.json({ data: workspace });
 		}
 	)
-	.delete
-	(
-		"/:workspaceId",
-		sessionMiddleware,
-		async (c) => {
+	.delete("/:workspaceId", sessionMiddleware, async (c) => {
 		const databases = c.get("databases");
-		
+
 		const user = c.get("user");
-		
+
 		const { workspaceId } = c.req.param();
-		
+
 		const member = await getMember({
 			databases,
 			workspaceId,
@@ -165,14 +161,9 @@ const app = new Hono()
 
 		//TODO: Delete members, projects and tasks
 
-			await databases.deleteDocument(
-				DATABASE_ID,
-				WORKSPACES_ID,
-				workspaceId
-			);
+		await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
 		return c.json({ data: { $id: workspaceId } });
-		}
-	)
+	})
 
 	.post("/:workspaceId/reset-invite-code", sessionMiddleware, async (c) => {
 		const databases = c.get("databases");
@@ -209,7 +200,7 @@ const app = new Hono()
 
 			const databases = c.get("databases");
 			const user = c.get("user");
-			
+
 			const member = await getMember({
 				databases,
 				workspaceId,
@@ -232,7 +223,7 @@ const app = new Hono()
 			await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
 				workspaceId,
 				userId: user.$id,
-				role: MemberRole.ADMIN
+				role: MemberRole.ADMIN,
 			});
 
 			return c.json({ data: workspace });
