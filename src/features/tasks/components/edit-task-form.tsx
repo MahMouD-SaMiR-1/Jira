@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+// import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -38,7 +38,7 @@ interface EditTaskFormProps {
 	onCancel?: () => void;
 	projectOptions: { id: string; name: string; imageUrl: string }[];
 	memberOptions: { id: string; name: string }[];
-	initialValues: Task
+	initialValues: Task;
 }
 
 export const EditTaskForm = ({
@@ -47,7 +47,7 @@ export const EditTaskForm = ({
 	memberOptions,
 	initialValues,
 }: EditTaskFormProps) => {
-	const workspaceId = useWorkspaceId();
+	// const workspaceId = useWorkspaceId();
 	const { mutate, isPending } = useUpdateTask();
 
 	const form = useForm<z.infer<typeof createTaskSchema>>({
@@ -63,7 +63,7 @@ export const EditTaskForm = ({
 	});
 	const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
 		mutate(
-			{ json: values, param:{taskId: initialValues.$id} },
+			{ json: values, param: { taskId: initialValues.$id } },
 			{
 				onSuccess: () => {
 					form.reset();

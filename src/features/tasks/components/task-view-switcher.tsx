@@ -16,8 +16,16 @@ import { DataKanban } from "./data-kanban";
 import { useCallback } from "react";
 import { TaskStatus } from "../types";
 import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
+import { DataCalendar } from "./data-calendar";
 
-export const TaskViewSwitcher = () => {
+
+interface TaskViewSwitcherProps{
+	hideProjectFilter?: boolean;
+}
+
+
+
+export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
 	const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
 
 	const [view, setView] = useQueryState("task-view", {
@@ -27,8 +35,7 @@ export const TaskViewSwitcher = () => {
 	const workspaceId = useWorkspaceId();
 	const { open } = useCreateTaskModal();
 
-	const {mutate : bulkUpdate} = useBulkUpdateTasks()
-
+	const { mutate: bulkUpdate } = useBulkUpdateTasks();
 
 	const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
 		workspaceId,
@@ -36,20 +43,16 @@ export const TaskViewSwitcher = () => {
 		assigneeId,
 		status,
 		dueDate,
-	}); 
+	});
 
 	const onKanbanChange = useCallback(
 		(tasks: { $id: string; status: TaskStatus; position: number }[]) => {
 			bulkUpdate({
-				json: {tasks},
+				json: { tasks },
 			});
 		},
 		[bulkUpdate]
 	);
-
-
-
-	
 
 	return (
 		<Tabs
@@ -76,7 +79,7 @@ export const TaskViewSwitcher = () => {
 					</Button>
 				</div>
 				<DottedSeparator className="my-4" />
-				<DataFilters />
+				<DataFilters hideProjectFilter={hideProjectFilter} />
 				<DottedSeparator className="my-4" />
 				{isLoadingTasks ? (
 					<div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
@@ -85,13 +88,16 @@ export const TaskViewSwitcher = () => {
 				) : (
 					<>
 						<TabsContent value="table" className="mt-0">
-								<DataTable columns={columns} data={tasks?.documents ?? [] }/>
+							<DataTable columns={columns} data={tasks?.documents ?? []} />
 						</TabsContent>
 						<TabsContent value="kanban" className="mt-0">
-								<DataKanban onChange={onKanbanChange} data={tasks?.documents ?? [] } />
+							<DataKanban
+								onChange={onKanbanChange}
+								data={tasks?.documents ?? []}
+							/>
 						</TabsContent>
-						<TabsContent value="calendar" className="mt-0">
-							{JSON.stringify(tasks)}
+						<TabsContent value="calendar" className="mt-0 h-full pb-4">
+							<DataCalendar data={tasks?.documents ?? []} />
 						</TabsContent>
 					</>
 				)}

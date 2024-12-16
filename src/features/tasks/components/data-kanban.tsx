@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
 import {
 	DragDropContext,
 	Droppable,
@@ -24,7 +25,9 @@ type TasksState = {
 
 interface DataKanbanProps {
 	data: Task[];
-    onChange: (tasks: { $id: string; status: TaskStatus;  position: number}[]) => void
+	onChange: (
+		tasks: { $id: string; status: TaskStatus; position: number }[]
+	) => void;
 }
 
 export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
@@ -48,29 +51,26 @@ export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
 		});
 
 		return initialTasks;
-    });
-    
+	});
 
-    useEffect(() => {
-        const newTasks: TasksState = {
-				[TaskStatus.BACKLOG]: [],
-				[TaskStatus.TODO]: [],
-				[TaskStatus.IN_PROGRESS]: [],
-				[TaskStatus.IN_REVIEW]: [],
-				[TaskStatus.DONE]: [],
-			};
-        data.forEach((task) => {
+	useEffect(() => {
+		const newTasks: TasksState = {
+			[TaskStatus.BACKLOG]: [],
+			[TaskStatus.TODO]: [],
+			[TaskStatus.IN_PROGRESS]: [],
+			[TaskStatus.IN_REVIEW]: [],
+			[TaskStatus.DONE]: [],
+		};
+		data.forEach((task) => {
 			newTasks[task.status].push(task);
-        });
-        
-        Object.keys(newTasks).forEach((status) => {
-					newTasks[status as TaskStatus].sort(
-						(a, b) => a.position - b.position
-					);
-        });
-        
-        setTasks(newTasks)
-    },[data])
+		});
+
+		Object.keys(newTasks).forEach((status) => {
+			newTasks[status as TaskStatus].sort((a, b) => a.position - b.position);
+		});
+
+		setTasks(newTasks);
+	}, [data]);
 
 	const onDragEnd = useCallback(
 		(result: DropResult) => {
@@ -146,7 +146,7 @@ export const DataKanban = ({ data, onChange }: DataKanbanProps) => {
 							if (task.position !== newPosition) {
 								updatesPayload.push({
 									$id: task.$id,
-									status: destStatus,
+									status: sourceStatus,
 									position: newPosition,
 								});
 							}
