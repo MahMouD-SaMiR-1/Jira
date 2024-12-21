@@ -27,7 +27,7 @@ import { Project } from "../types";
 import { useUpdateProject } from "../api/use-update-project";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteProject } from "../api/use-delete-project";
-// import { toast } from "sonner";
+
 
 interface EditProjectFormProps {
 	onCancel?: () => void;
