@@ -5,13 +5,17 @@ interface UseGetWorkspaceInfoProps {
 	workspaceId: string;
 }
 
-export const useGetWorkspaceInfo = ({ workspaceId }: UseGetWorkspaceInfoProps) => {
+export const useGetWorkspaceInfo = ({
+	workspaceId,
+}: UseGetWorkspaceInfoProps) => {
 	const query = useQuery({
 		queryKey: ["workspace-info", workspaceId],
 		queryFn: async () => {
-			const response = await client.api.workspaces[":workspaceId"]["info"].$get({
-				param: { workspaceId },
-			});
+			const response = await client.api.workspaces[":workspaceId"]["info"].$get(
+				{
+					param: { workspaceId },
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error("Failed to fetch workspace info");

@@ -30,9 +30,10 @@ export const JoinWorkspaceForm = ({
 	const { mutate, isPending } = useJoinWorkspace();
 
 	const onSubmit = () => {
-		mutate({
-			param: { workspaceId },
-			json: { code: inviteCode },
+		mutate(
+			{
+				param: { workspaceId },
+				json: { code: inviteCode },
 			},
 			{
 				onSuccess: ({ data }) => {
@@ -64,9 +65,7 @@ export const JoinWorkspaceForm = ({
 						className="w-full lg:w-fit"
 						disabled={isPending}
 					>
-						<Link href="/">
-							Cancel
-						</Link>
+						<Link href="/">Cancel</Link>
 					</Button>
 					<Button
 						className="w-full lg:w-fit"

@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
 												: flexRender(
 														header.column.columnDef.header,
 														header.getContext()
-													)}
+												  )}
 										</TableHead>
 									);
 								})}
@@ -106,7 +106,6 @@ export function DataTable<TData, TValue>({
 					</TableBody>
 				</Table>
 			</div>
-			{/* 2:46 in part 2 the color of buttons and its text */}
 			<div className="flex items-center justify-end space-x-2 py-4">
 				<Button
 					variant="secondary"

@@ -6,7 +6,6 @@ import { zValidator } from "@hono/zod-validator";
 
 import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 
-
 import { MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/utils";
 
@@ -277,14 +276,12 @@ const app = new Hono()
 
 			return c.json({ data: workspace });
 		}
-)
-	
-.get("/:workspaceId/analytics", sessionMiddleware, async (c) => {
+	)
+
+	.get("/:workspaceId/analytics", sessionMiddleware, async (c) => {
 		const databases = c.get("databases");
 		const user = c.get("user");
 		const { workspaceId } = c.req.param();
-
-		
 
 		const member = await getMember({
 			databases,

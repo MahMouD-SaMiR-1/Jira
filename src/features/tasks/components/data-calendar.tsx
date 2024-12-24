@@ -3,7 +3,7 @@ import {
 	getDay,
 	parse,
 	startOfWeek,
-	// addMonths,
+	addMonths,
 	subMonths,
 } from "date-fns";
 
@@ -61,7 +61,7 @@ const CustomToolbar = ({ date, onNavigate }: CustomToolbarProps) => {
 			</Button>
 		</div>
 	);
-    };
+};
 
 export const DataCalendar = ({ data }: DataCalendarProps) => {
 	const [value, setValue] = useState(
@@ -82,7 +82,7 @@ export const DataCalendar = ({ data }: DataCalendarProps) => {
 		if (action === "PREV") {
 			setValue(subMonths(value, 1));
 		} else if (action === "NEXT") {
-			setValue(subMonths(value, 1));
+			setValue(addMonths(value, 1));
 		} else if (action === "TODAY") {
 			setValue(new Date());
 		}
@@ -107,7 +107,7 @@ export const DataCalendar = ({ data }: DataCalendarProps) => {
 				eventWrapper: ({ event }) => (
 					<EventCard
 						id={event.id}
-						title={event.id}
+						title={event.title}
 						assignee={event.assignee}
 						project={event.project}
 						status={event.status}

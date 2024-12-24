@@ -28,7 +28,6 @@ import { useUpdateProject } from "../api/use-update-project";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteProject } from "../api/use-delete-project";
 
-
 interface EditProjectFormProps {
 	onCancel?: () => void;
 	initialValues: Project;
@@ -81,11 +80,10 @@ export const EditProjectForm = ({
 			...values,
 			image: values.image instanceof File ? values.image : "",
 		};
-		mutate(
-			{
-				form: finalValues,
-				param: { projectId: initialValues.$id },
-			});
+		mutate({
+			form: finalValues,
+			param: { projectId: initialValues.$id },
+		});
 	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,9 +92,6 @@ export const EditProjectForm = ({
 			form.setValue("image", file);
 		}
 	};
-
-
-	
 
 	return (
 		<div className="flex flex-col gap-y-4">

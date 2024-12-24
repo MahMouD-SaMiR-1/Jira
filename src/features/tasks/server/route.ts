@@ -312,7 +312,7 @@ const app = new Hono()
 		});
 	})
 
-	.post( // 4:21:17
+	.post(
 		"/bulk-update",
 		sessionMiddleware,
 		zValidator(
@@ -352,7 +352,7 @@ const app = new Hono()
 			const workspaceId = workspaceIds.values().next().value;
 
 			if (!workspaceId) {
-				return c.json({ error: "Workspace ID is required" },400);
+				return c.json({ error: "Workspace ID is required" }, 400);
 			}
 
 			const member = await getMember({

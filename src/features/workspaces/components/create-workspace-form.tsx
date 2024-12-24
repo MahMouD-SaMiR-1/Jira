@@ -25,7 +25,6 @@ import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-
 interface CreateWorkspaceFormProps {
 	onCancel?: () => void;
 }
@@ -50,7 +49,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 		mutate(
 			{ form: finalValues }, // it wa {json : values} but it changed to handle uploading image
 			{
-				onSuccess: ({data}) => {
+				onSuccess: ({ data }) => {
 					form.reset();
 					router.push(`/workspaces/${data.$id}`);
 				},
@@ -139,9 +138,9 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 														size="xs"
 														className="w-fit mt-2"
 														onClick={() => {
-															field.onChange(null)
+															field.onChange(null);
 															if (inputRef.current) {
-																inputRef.current.value = ""
+																inputRef.current.value = "";
 															}
 														}}
 													>

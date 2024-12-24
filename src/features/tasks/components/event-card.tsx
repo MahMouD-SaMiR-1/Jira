@@ -9,7 +9,7 @@ import { Member } from "@/features/members/types";
 
 interface EventCardProps {
 	title: string;
-	assignee: Member ;
+	assignee: Member;
 	project: Project;
 	status: TaskStatus;
 	id: string;
@@ -39,7 +39,7 @@ export const EventCard = ({
 		router.push(`/workspaces/${workspaceId}/tasks/${id}`);
 	};
 
-	return ( // 4:55 
+	return (
 		<div className="px-2">
 			<div
 				onClick={onClick}
@@ -48,7 +48,7 @@ export const EventCard = ({
 					statusColorMap[status]
 				)}
 			>
-				<p>{title}</p> 
+				<p>{title}</p>
 				<div className="flex items-center gap-x-1">
 					<MemberAvatar name={assignee?.name} />
 					<div className="size-1 rounded-full bg-neutral-300" />

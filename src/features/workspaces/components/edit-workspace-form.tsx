@@ -32,11 +32,13 @@ import { useResetInviteCode } from "../api/use-reset-invite-code";
 
 interface EditWorkspaceFormProps {
 	onCancel?: () => void;
+	onSave?: () => void;
 	initialValues: Workspace;
 }
 
 export const EditWorkspaceForm = ({
 	onCancel,
+	onSave,
 	initialValues,
 }: EditWorkspaceFormProps) => {
 	const router = useRouter();
@@ -100,12 +102,10 @@ export const EditWorkspaceForm = ({
 			...values,
 			image: values.image instanceof File ? values.image : "",
 		};
-		mutate(
-			{
-				form: finalValues,
-				param: { workspaceId: initialValues.$id },
-			}
-		);
+		mutate({
+			form: finalValues,
+			param: { workspaceId: initialValues.$id },
+		});
 	};
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -250,7 +250,16 @@ export const EditWorkspaceForm = ({
 								>
 									Cancel
 								</Button>
-								<Button disabled={isPending} type="submit" size="lg">
+								<Button
+									disabled={isPending}
+									type="submit"
+									size="lg"
+									onClick={
+										onSave
+											? onSave
+											: () => router.push(`/workspaces/${initialValues.$id}`)
+									}
+								>
 									Save Changes
 								</Button>
 							</div>

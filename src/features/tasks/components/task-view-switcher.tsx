@@ -19,22 +19,21 @@ import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
 import { DataCalendar } from "./data-calendar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
 
-
-interface TaskViewSwitcherProps{
+interface TaskViewSwitcherProps {
 	hideProjectFilter?: boolean;
 }
 
-
-
-export const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
+export const TaskViewSwitcher = ({
+	hideProjectFilter,
+}: TaskViewSwitcherProps) => {
 	const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
 
 	const [view, setView] = useQueryState("task-view", {
-		defaultValue: " table",
+		defaultValue: "table",
 	});
 
 	const workspaceId = useWorkspaceId();
-	const paramProjectId = useProjectId()
+	const paramProjectId = useProjectId();
 	const { open } = useCreateTaskModal();
 
 	const { mutate: bulkUpdate } = useBulkUpdateTasks();

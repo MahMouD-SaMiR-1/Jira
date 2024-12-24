@@ -11,9 +11,7 @@ export const useCreateWorkspace = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
-		mutationFn: async ({ form }) => { //it was ({json}) but it was changed to handle uploading image
-			
-
+		mutationFn: async ({ form }) => {
 			const response = await client.api.workspaces["$post"]({ form });
 
 			if (!response.ok) {

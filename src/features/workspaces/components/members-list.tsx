@@ -22,15 +22,13 @@ import { useUpdateMember } from "@/features/members/api/use-update-member";
 import { MemberRole } from "@/features/members/types";
 import { useConfirm } from "@/hooks/use-confirm";
 
-
-
 export const MembersList = () => {
-    const workspaceId = useWorkspaceId();
-    const [ConfirmDialog, confirm] = useConfirm(
-        "Remove member",
-        "This member will be remove from the workspace",
-        "destructive"
-    )
+	const workspaceId = useWorkspaceId();
+	const [ConfirmDialog, confirm] = useConfirm(
+		"Remove member",
+		"This member will be remove from the workspace",
+		"destructive"
+	);
 
 	const { data } = useGetMembers({ workspaceId });
 
@@ -38,24 +36,27 @@ export const MembersList = () => {
 		useDeleteMember();
 
 	const { mutate: updateMember, isPending: isUpdatingMember } =
-        useUpdateMember();
-    
-    const handleUpdateMember = (memberId: string, role: MemberRole) => {
-        updateMember({
-            json: { role },
-            param: {memberId},
-        })
-    }
-    const handleDeleteMember = async (memberId: string) => {
-        const ok = await confirm()
-        if (!ok) return;
+		useUpdateMember();
 
-        deleteMember({ param: {memberId} }, {
-            onSuccess: () => { 
-                window.location.reload()
-            }
-        })
-    }
+	const handleUpdateMember = (memberId: string, role: MemberRole) => {
+		updateMember({
+			json: { role },
+			param: { memberId },
+		});
+	};
+	const handleDeleteMember = async (memberId: string) => {
+		const ok = await confirm();
+		if (!ok) return;
+
+		deleteMember(
+			{ param: { memberId } },
+			{
+				onSuccess: () => {
+					window.location.reload();
+				},
+			}
+		);
+	};
 	return (
 		<Card className="w-full h-full border-none shadow-none">
 			<ConfirmDialog />

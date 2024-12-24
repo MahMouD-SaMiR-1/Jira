@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { z } from "zod";
 import { FcGoogle } from "react-icons/fc";
@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { signUpWithGithub, signUpWithGoogle }from "@/lib/oauth"
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
@@ -23,12 +23,8 @@ import Link from "next/link";
 import { loginSchema } from "../schemas";
 import { useLogin } from "../api/use-login";
 
-
-
 export const SignInCard = () => {
-
-	const {mutate , isPending}= useLogin();
-
+	const { mutate, isPending } = useLogin();
 
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
@@ -39,7 +35,7 @@ export const SignInCard = () => {
 	});
 
 	const onSubmit = (values: z.infer<typeof loginSchema>) => {
-		mutate({json: values});
+		mutate({ json: values });
 	};
 
 	return (

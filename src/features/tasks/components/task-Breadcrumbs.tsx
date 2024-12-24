@@ -15,30 +15,33 @@ interface TaskBreadcrumbsProps {
 }
 
 export const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
-    const router = useRouter()
-    const workspaceId = useWorkspaceId();
-    
-    const { mutate, isPending } = useDeleteTask();
-    const [ConfirmDialog, confirm] = useConfirm(
-        "Delete task",
-        "This action cannot be undone",
-        "destructive"
-    )
+	const router = useRouter();
+	const workspaceId = useWorkspaceId();
 
-    const handleDeleteTask = async () => {
-        const ok = await confirm()
-        if (!ok) return
-        
-        mutate({ param: { taskId: task.$id } }, {
-            onSuccess: () => {
-                router.push(`/workspaces/${workspaceId}/tasks`)
-            }
-        });
-    }
+	const { mutate, isPending } = useDeleteTask();
+	const [ConfirmDialog, confirm] = useConfirm(
+		"Delete task",
+		"This action cannot be undone",
+		"destructive"
+	);
+
+	const handleDeleteTask = async () => {
+		const ok = await confirm();
+		if (!ok) return;
+
+		mutate(
+			{ param: { taskId: task.$id } },
+			{
+				onSuccess: () => {
+					router.push(`/workspaces/${workspaceId}/tasks`);
+				},
+			}
+		);
+	};
 
 	return (
-        <div className="flex items-center gap-x-2">
-            <ConfirmDialog/>
+		<div className="flex items-center gap-x-2">
+			<ConfirmDialog />
 			<ProjectAvatar
 				name={project.name}
 				image={project.imageUrl}
@@ -52,8 +55,8 @@ export const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
 			<ChevronRightIcon className="size-4 lg-size-5 text-muted-foreground" />
 			<p className="text-sm lg:text-lg font-semibold">{task.name}</p>
 			<Button
-                onClick={handleDeleteTask}
-                disabled={isPending}
+				onClick={handleDeleteTask}
+				disabled={isPending}
 				className="ml-auto"
 				variant="destructive"
 				size="sm"

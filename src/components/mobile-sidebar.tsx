@@ -25,5 +25,5 @@ export const MobileSidebar = () => {
 				<Sidebar />
 			</SheetContent>
 		</Sheet>
-	); 
+	);
 };

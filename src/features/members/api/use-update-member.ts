@@ -4,18 +4,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<(typeof client.api.members)[":memberId"]["$patch"], 200>;
-type RequestType = InferRequestType<(typeof client.api.members)[":memberId"]["$patch"]>;
+type ResponseType = InferResponseType<
+	(typeof client.api.members)[":memberId"]["$patch"],
+	200
+>;
+type RequestType = InferRequestType<
+	(typeof client.api.members)[":memberId"]["$patch"]
+>;
 
 export const useUpdateMember = () => {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation<ResponseType, Error, RequestType>({
-		mutationFn: async ({ param, json }) => { //it was ({json}) but it was changed to handle uploading image
-			
-
+		mutationFn: async ({ param, json }) => {
 			const response = await client.api.members[":memberId"]["$patch"]({
-				param, json
+				param,
+				json,
 			});
 
 			if (!response.ok) {
@@ -27,7 +31,6 @@ export const useUpdateMember = () => {
 		onSuccess: () => {
 			toast.success("Member updated");
 			queryClient.invalidateQueries({ queryKey: ["members"] });
-			// queryClient.invalidateQueries({ queryKey: ["member" , data.$id] });
 		},
 		onError: () => {
 			toast.error("Failed to update member");

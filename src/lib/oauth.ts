@@ -20,7 +20,6 @@ export async function signUpWithGithub() {
 	return redirect(redirectUrl);
 }
 
-
 export async function signUpWithGoogle() {
 	const { account } = await createAdminClient();
 
